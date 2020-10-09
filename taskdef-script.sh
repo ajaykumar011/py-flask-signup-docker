@@ -11,11 +11,12 @@ aws ecs register-task-definition --family flask-signup --cli-input-json file://f
 # Update the service with the new task definition and desired count
 TASK_REVISION=`aws ecs describe-task-definition --task-definition flask-signup | egrep "revision" | tr "/" " " | awk '{print $2}' | sed 's/"$//'`
 DESIRED_COUNT=`aws ecs describe-services --cluster ${CLUSTER_NAME} --services ${SERVICE_NAME} | egrep "desiredCount" | tr "/" " " | awk '{print $2}' | sed 's/,$//'`
-if [ ${DESIRED_COUNT} = "0" ]; then
+if [ "${DESIRED_COUNT}" == "0" ]; then
     DESIRED_COUNT="1"
 fi
 
 echo $DESIRED_COUNT
 echo $TASK_REVISION
+
 aws ecs update-service --cluster ecs-cluster-demo --service ${SERVICE_NAME} --task-definition ${TASK_FAMILY}:${TASK_REVISION} --desired-count ${DESIRED_COUNT}
 
