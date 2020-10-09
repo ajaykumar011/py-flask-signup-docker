@@ -16,4 +16,6 @@ if [ ${DESIRED_COUNT} = "0" ]; then
 fi
 
 echo $DESIRED_COUNT
+echo $TASK_REVISION
 aws ecs update-service --cluster ecs-cluster-demo --service ${SERVICE_NAME} --task-definition ${TASK_FAMILY}:${TASK_REVISION} --desired-count ${DESIRED_COUNT}
+
